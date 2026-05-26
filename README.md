@@ -8,3 +8,4 @@ A tiny command-line todo app in Python.
 python todo.py list
 python todo.py add "Buy milk"
 python todo.py done 1
+update
