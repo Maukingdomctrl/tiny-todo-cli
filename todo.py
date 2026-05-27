@@ -47,9 +47,26 @@ def remove_todo(n):
     save_todos(todos)
     print(f'Removed: "{removed["text"]}"')
 
+def clear_completed():
+    todos = load_todos()
+    before = len(todos)
+    todos = [t for t in todos if not t["done"]]
+    removed_count = before - len(todos)
+    save_todos(todos)
+    print(f"Cleared {removed_count} completed todo(s).")
+
+def show_stats():
+    todos = load_todos()
+    total = len(todos)
+    completed = sum(1 for t in todos if t["done"])
+    pending = total - completed
+    print(f"Total: {total}")
+    print(f"Completed: {completed}")
+    print(f"Pending: {pending}")
+
 def main():
     if len(sys.argv) < 2:
-        print('Usage: python todo.py [list|add|done|remove] [args]')
+        print('Usage: python todo.py [list|add|done|remove|clear|stats] [args]')
         return
 
     cmd = sys.argv[1]
@@ -70,6 +87,10 @@ def main():
             print("Usage: python todo.py remove <number>")
             return
         remove_todo(int(sys.argv[2]))
+    elif cmd == "clear":
+        clear_completed()
+    elif cmd == "stats":
+        show_stats()
     else:
         print(f"Unknown command: {cmd}")
 
