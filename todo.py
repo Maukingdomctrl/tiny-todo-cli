@@ -64,9 +64,19 @@ def show_stats():
     print(f"Completed: {completed}")
     print(f"Pending: {pending}")
 
+def edit_todo(n, new_text):
+    todos = load_todos()
+    if n < 1 or n > len(todos):
+        print("Invalid todo number.")
+        return
+    old = todos[n - 1]["text"]
+    todos[n - 1]["text"] = new_text
+    save_todos(todos)
+    print(f'Updated #{n}: "{old}" -> "{new_text}"')
+
 def main():
     if len(sys.argv) < 2:
-        print('Usage: python todo.py [list|add|done|remove|clear|stats] [args]')
+        print('Usage: python todo.py [list|add|done|remove|clear|stats|edit] [args]')
         return
 
     cmd = sys.argv[1]
@@ -91,6 +101,11 @@ def main():
         clear_completed()
     elif cmd == "stats":
         show_stats()
+    elif cmd == "edit":
+        if len(sys.argv) < 4 or not sys.argv[2].isdigit():
+            print('Usage: python todo.py edit <number> "new task text"')
+            return
+        edit_todo(int(sys.argv[2]), " ".join(sys.argv[3:]))
     else:
         print(f"Unknown command: {cmd}")
 
